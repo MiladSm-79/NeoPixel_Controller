@@ -9,4 +9,6 @@ class ProjectColors{
   static Color whiteAppbarColor = Colors.white;
   static Color blackAppbarColor = Colors.black;
   static Color defaultWhiteColor = Colors.white;
+
+  static var primaryColor;
 }

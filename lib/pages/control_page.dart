@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:http/http.dart' as http;
 import 'package:neo_pixel/AppSettings.dart';
+import 'package:neo_pixel/pages/animations.dart';
+import 'package:neo_pixel/pages/gradients.dart';
 import 'package:neo_pixel/theme/Colors.dart';
 import 'package:neo_pixel/theme/fonts.dart';
 import 'package:neo_pixel/widgets/sleep_timer.dart';
@@ -42,9 +44,9 @@ class _ControlPageState extends State<ControlPage> {
 
   void _onColorChanged(Color c) {
     currentColor = c;
-    r = c.r*255.toDouble();
-    g = c.g*255.toDouble();
-    b = c.b*255.toDouble();
+    r = c.r * 255.toDouble();
+    g = c.g * 255.toDouble();
+    b = c.b * 255.toDouble();
   }
 
   // Called when user releases finger after picking color
@@ -78,7 +80,7 @@ class _ControlPageState extends State<ControlPage> {
       _showSnack(resp.body);
       await _saveSettings();
     } catch (e) {
-      _showSnack("$e");
+      _showSnack("$e error !");
     } finally {
       if (mounted) setState(() => isSending = false);
     }
@@ -99,9 +101,9 @@ class _ControlPageState extends State<ControlPage> {
 
   void _showSnack(String msg) {
     if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(msg, style: Fonts.smallTextStyle)),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(msg, style: Fonts.smallTextStyle)));
   }
 
   @override
@@ -122,6 +124,16 @@ class _ControlPageState extends State<ControlPage> {
               await Navigator.push(
                 context,
                 MaterialPageRoute(builder: (_) => const SettingsPage()),
+              );
+              setState(() {});
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.animation),
+            onPressed: () async {
+              await Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const Animations()),
               );
               setState(() {});
             },
@@ -174,8 +186,13 @@ class _ControlPageState extends State<ControlPage> {
                 style: Fonts.smallTextStyle,
               ),
               style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 16),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 50,
+                  vertical: 16,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(24),
+                ),
                 backgroundColor: isSending
                     ? ProjectColors.buttonAnimationColor
                     : ProjectColors.buttonColor,
@@ -183,6 +200,14 @@ class _ControlPageState extends State<ControlPage> {
               ),
             ),
           ),
+          GestureDetector(
+            onTap: (){ 
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const GradientPalettePage()),
+              );},
+            child: Text("Gradients",style: TextStyle(fontSize: 24),),
+          )
         ],
       ),
     );
